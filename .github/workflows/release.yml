@@ -1,0 +1,31 @@
+name: Build Plugin ZIP
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+# リリースの作成・アップロードに必要な書き込み権限を設定
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 一時フォルダを作成してWordPress標準の階層構造（minilog/フォルダ内）でZIP化する
+      - name: Create ZIP
+        run: |
+          mkdir -p minilog
+          # 必要なファイルを一時フォルダにコピー (Git管理外や不要ファイルを除外)
+          rsync -rr . minilog/ --exclude=".git*" --exclude=".github" --exclude="minilog.zip" --exclude="minilog"
+          zip -r minilog.zip minilog
+          rm -rf minilog
+
+      # Releaseページにアタッチ (v1から最新のv2に更新)
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: minilog.zip
