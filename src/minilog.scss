@@ -1,0 +1,152 @@
+// Minilog styles
+.c-minilog {
+  --primary: 151 100% 45%;
+  --base: 0 0% 0%;
+  --text: 0 0% 100%;
+  --border: 0 0% 100%;
+
+  --opacity0: 0;
+  --opacity10: .1;
+  --opacity20: .2;
+  --opacity30: .3;
+  --opacity40: .4;
+  --opacity50: .5;
+  --opacity60: .6;
+  --opacity70: .7;
+  --opacity70: .8;
+  --opacity90: .9;
+  --opacity100: 1;
+
+  --fonts: 'JetBrains Mono', 'Noto Sans JP', monospace;
+
+  $parent: &;
+
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  max-width: 500px;
+  width: 100%;
+  background-color: hsla(var(--base)/var(--opacity70));
+  z-index: 99999;
+  color: var(--text);
+  font-family: var(--fonts);
+
+  &__header {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    background-color: hsla(var(--base)/var(--opacity70));
+    padding: .5rem;
+    color: hsl(var(--text));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title-tag {
+    font-size: 1rem;
+    margin-bottom: .5rem;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  &__checkbox {
+    width: 24px;
+    height: 24px;
+    accent-color: hsl(var(--primary));
+    cursor: pointer;
+  }
+
+
+  &__content {
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+    transition: height .3s;
+  }
+
+
+  &:has(#{$parent}__checkbox:checked) {
+    #{$parent}__content {
+      height: 80vh;
+      padding: 2rem;
+      overflow-y: scroll;
+    }
+  }
+
+  // タブ
+  &__tabs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-bottom: 1px solid hsla(var(--border)/var(--opacity10));
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__tab {
+
+
+    label {
+      display: flex;
+      padding: 1rem;
+      justify-content: center;
+      align-items: center;
+      color: hsl(var(--text));
+    }
+  }
+
+  &__tab-pane {
+    display: none;
+  }
+
+  &:has(#{$parent}__radio-logs:checked) &__tab-pane--logs {
+    display: block;
+  }
+
+  &:has(#{$parent}__radio-templates:checked) &__tab-pane--templates {
+    display: block;
+  }
+
+  // ログ部分
+  &__log {
+    margin-bottom: 30px;
+  }
+
+  &__log-header {
+    margin-bottom: 1rem;
+    background: #333;
+    border-left: 4px solid hsl(var(--primary));
+    padding: 15px;
+  }
+
+  &__label {
+    color: hsl(var(--primary));
+    font-size: 15px;
+    margin-right: 15px;
+  }
+
+  &__file {
+    color: #aaa;
+    font-size: 12px;
+  }
+
+  &__code {
+    margin: 0;
+    background: hsl(var(--base));
+    padding: 15px;
+    overflow-x: auto;
+    border-radius: 4px;
+    color: hsl(var(--text));
+    white-space: break-spaces;
+    font-family: var(--fonts);
+    font-size: .9rem;
+    line-height: 2;
+  }
+}

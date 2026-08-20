@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./minilog.min.css">
+</head>
+
+<body>
+  <section class="c-minilog">
+    <header class="c-minilog__header">
+      <h1 class="c-minilog__title">minilog</h1>
+      <input type="checkbox" class="c-minilog__checkbox">
+    </header>
+    <div class="c-minilog__content">
+      <ul class="c-minilog__tabs">
+        <li class="c-minilog__tab">
+          <label><input type="radio" id="minilog-logs" class="c-minilog__radio-logs" name="minilog-tab"
+              checked>Logs</label>
+        </li>
+        <li class="c-minilog__tab">
+          <label><input type="radio" id="minilog-templates" class="c-minilog__radio-templates"
+              name="minilog-tab">Templates</label>
+        </li>
+      </ul>
+      <div class="c-minilog__tab-pane c-minilog__tab-pane--logs">
+        logのパネル
+      </div>
+      <div class="c-minilog__tab-pane c-minilog__tab-pane--templates">
+        templateのパネル
+      </div>
+    </div>
+  </section>
+</body>
+
+</html>

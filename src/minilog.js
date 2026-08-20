@@ -1,0 +1,5 @@
+class Minilog {
+
+}
+
+const minilog = new Minilog();
