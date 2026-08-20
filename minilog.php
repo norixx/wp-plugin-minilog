@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: Minilog
- * Plugin URI:  
+ * Plugin URI:  https://github.com/norixx/wp-plugin-minilog
  * Description: 開発用デバッグログおよび読み込みテンプレート一覧を表示するプラグインです。
  * Version:     0.1.1
  * Author:      Taro Shinjyuku
