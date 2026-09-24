@@ -45,6 +45,7 @@ class Minilog_Settings
 
   /**
    * Register settings
+   * DB(wp_options)に登録する項目名を設定する関数
    */
   public static function register_settings()
   {
@@ -53,6 +54,7 @@ class Minilog_Settings
 
   /**
    * ⭐️ Render HTML
+   * 管理画面設定ページ用HTML
    */
   public static function render_settings_page()
   {
@@ -83,6 +85,8 @@ class Minilog_Settings
 <?php
   }
 }
+
+// クラスの初期化（フックを有効化し、renderメソッドを実行）
 Minilog_Settings::init();
 
 
@@ -121,7 +125,8 @@ class Minilog_Logger
   public static function log(mixed $data = [], string $label = ''): void
   {
     // そもそも設定がオフの場合はログを蓄積しない
-    $enabled = get_option('minilog_is_enabled', '0');
+    // 初期値は1にしておかないと、１回もプラグインを使用しことがない&&DBに設置値もない場合にminilog関数が動作しない
+    $enabled = get_option('minilog_is_enabled', '1');
     if ($enabled !== '1') {
       return;
     }
