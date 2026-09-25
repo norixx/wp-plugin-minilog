@@ -28,6 +28,9 @@ class Minilog_Settings
   {
     add_action('admin_menu', [__CLASS__, 'add_admin_menu']);
     add_action('admin_init', [__CLASS__, 'register_settings']);
+
+    // プラグイン一覧に「設定」リンクを追加するフィルターフック
+    add_filter('plugin_action_links_' . plugin_basename(__FILE__), [__CLASS__, 'add_action_links']);
   }
 
   /**
@@ -46,7 +49,7 @@ class Minilog_Settings
 
   /**
    * Register settings
-   * DB(wp_options)に登録する項目名を設定する関数
+   * DB(wp_optionsテーブル)に登録する項目名を設定する関数
    */
   public static function register_settings()
   {
@@ -112,6 +115,24 @@ FIELD;
       </form>
     </div>
 <?php
+  }
+
+  /**
+   * プラグイン一覧のアクションリンクに「設定」を追加
+   */
+  public static function add_action_links(array $links): array
+  {
+    // 設定ページのURLを生成（設定 > Minilog なので options-general.php?page=minilog）
+    $settings_url = admin_url('options-general.php?page=minilog');
+    // 「設定」リンクのHTML
+    $settings_link = sprintf(
+      '<a href="%s">%s</a>',
+      esc_url($settings_url),
+      __('Settings') // WordPress標準の翻訳関数（「設定」と自動翻訳されます）
+    );
+    // 配列の先頭（「無効化」の前）に挿入する
+    array_unshift($links, $settings_link);
+    return $links;
   }
 }
 
