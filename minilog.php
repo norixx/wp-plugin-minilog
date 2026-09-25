@@ -4,7 +4,7 @@
  * Plugin Name: Minilog
  * Plugin URI:  https://github.com/norixx/wp-plugin-minilog
  * Description: 開発用デバッグログおよび読み込みテンプレート一覧を表示するプラグインです。
- * Version:     0.1.1
+ * Version:     0.1.2
  * Author:      Taro Shinjyuku
  * License:     GPL2
  */
@@ -16,6 +16,7 @@ if (!defined('ABSPATH')) {
 
 /**
  * 1. Create admin menu and page under the settings
+ * 管理ページ用クラス
  */
 class Minilog_Settings
 {
@@ -50,6 +51,47 @@ class Minilog_Settings
   public static function register_settings()
   {
     register_setting('minilog_settings_group', 'minilog_is_enabled'); // 🔄 Minilog swich on(1)/off(0)
+
+    // 管理ページのメインセクションの追加
+    add_settings_section(
+      'minilog_main_section',
+      'Minilog設定',
+      [__CLASS__, 'render_section_info'], //セクション用説明文
+      'minilog' //管理ページのスラッグ(add_options_pageで設定済)
+    );
+
+    // 管理ページの入力欄の追加
+    add_settings_field(
+      'minilog_is_enabled',
+      'デバッグログの出力',
+      [__CLASS__, 'render_field_is_enabled'], // 実際に表示するHTML
+      'minilog', // どのページに追加するか(add_options_pageで設定済)
+      'minilog_main_section' // どのセクション名に追加するか
+    );
+  }
+
+  /**
+   * メインセクションの説明文
+   */
+  public static function render_section_info()
+  {
+    echo '<p>このページでは Minilog の基本設定を行えます。</p>';
+  }
+
+  /**
+   * チェックボックスの出力
+   */
+  public static function render_field_is_enabled()
+  {
+    $enabled = get_option('minilog_is_enabled', '1'); // Default value is on(1)
+    $is_checked = checked('1', $enabled, false); // 事前に関数を実行して文字列にしておく
+    $field = <<<FIELD
+    <label>
+      <input type="checkbox" name="minilog_is_enabled" value="1" {$is_checked}>
+      有効にする（wp_footer でログとテンプレート一覧を出力します）
+    </label>
+FIELD;
+    echo $field;
   }
 
   /**
@@ -58,7 +100,6 @@ class Minilog_Settings
    */
   public static function render_settings_page()
   {
-    $enabled = get_option('minilog_is_enabled', '1'); // Default value is on(1)
 ?>
     <div class="wrap">
       <h1><?= _x('Minilog settings', 'minilog'); ?></h1>
@@ -66,20 +107,8 @@ class Minilog_Settings
         <?php
         settings_fields('minilog_settings_group');
         do_settings_sections('minilog');
+        submit_button();
         ?>
-        <table class="form-table">
-          <tr valign="top">
-            <th scope="row">デバッグログの出力</th>
-            <td>
-              <label>
-                <!-- 🔄 Minilog on/off -->
-                <input type="checkbox" name="minilog_is_enabled" value="1" <?php checked('1', $enabled); ?> />
-                有効にする（wp_footer でログとテンプレート一覧を出力します）
-              </label>
-            </td>
-          </tr>
-        </table>
-        <?php submit_button(); ?>
       </form>
     </div>
 <?php
